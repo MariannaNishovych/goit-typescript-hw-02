@@ -1,0 +1,36 @@
+.header{
+    background-color: transparent;
+  padding: 40px 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid white;
+}
+
+.form {
+    display: flex;
+    align-items: center;
+}
+
+.searchInput{
+    width: 200px;
+    height: 30px;
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #131fbb;
+    border-radius: 30px;
+    width: 300px;
+    outline: none;
+}
+
+.submitBtn{
+    background-color: #131fbb;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 18px 24px;
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    margin-left: 10px;
+}

@@ -1,0 +1,10 @@
+.imgList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+    margin-bottom: 15px;
+}
