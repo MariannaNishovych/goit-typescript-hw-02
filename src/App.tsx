@@ -7,20 +7,29 @@ import Loader from './components/Loader/Loader';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
 import ImageModal from './components/ImageModal/ImageModal';
+import { Image, Response } from './types';
 
+interface ModalState {
+    isOpen: boolean;
+    imgUrl: string;
+    imgAlt: string;
+}
 
 function App() {
 
-    const [searchQuery, setSearchQuery] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
-    const [isEmpty, setIsEmpty] =useState(false);
-    const[images, setImages] = useState([]);
-    const [page, setPage] = useState(1);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isError, setIsError] = useState<null | string>(null);
+    const [isEmpty, setIsEmpty] =useState<boolean>(false);
+    const[images, setImages] = useState<Image[]>([]);
+    const [page, setPage] = useState<number>(1);
     const [nbPage, setNbPage] = useState(false)
-    const [modal, setModal] = useState({ isOpen: false, imgUrl: "", imgAlt: "" });
+    const [modal, setModal] = useState<ModalState>({ 
+        isOpen: false, 
+        imgUrl: "", 
+        imgAlt: "" });
 
-const handleSubmit = (searchQuery) => {
+const handleSubmit = (searchQuery: string): void => {
     setSearchQuery(searchQuery);
     setPage(1);
     setImages([]);
@@ -32,9 +41,9 @@ if(!searchQuery) {
 }
 const fetchImage = async () =>{
     try {
-        setIsError(false);
         setIsLoading(true);
-        const {results, total_pages} = await getImages(searchQuery, page);
+        const {results, total_pages}: Response = await getImages(searchQuery, page);
+
         if (results.length === 0 && page === 1) {
             setIsEmpty(true);
         } else {
@@ -42,24 +51,30 @@ const fetchImage = async () =>{
             setNbPage(page < total_pages);
             setIsEmpty(false);
         }
-    } catch {
-        setIsError(true);
+    } catch (err) {
+        if (err instanceof Error) {
+            setIsError(err.message);
+        } else {
+            setIsError('Error occurred');
+        }
+        
     } finally {
         setIsLoading(false);
     }
 };
+
 fetchImage()
 }, [searchQuery, page]);
 
-const handleLoadMore = () => {
+const handleLoadMore = (): void => {
     setPage(prev => prev + 1)
 };
 
-const openModal = (url, alt) => {
+const openModal = (url: string, alt: string): void => {
     setModal({ ...modal, isOpen: true, imgUrl: url, imgAlt: alt || "Image" });
 };
 
-const closeModal = () => {
+const closeModal = (): void => {
     setModal({ ...modal, isOpen: false, imgUrl: "", imgAlt: "Image" });
 };
 
@@ -67,9 +82,12 @@ return (
     <div>
         <SearchBar onSubmit={handleSubmit}/>
         {isEmpty && (
-        <ErrorMessage>Sorry.You should write correct text.</ErrorMessage>
+        <p style={{ color: "red" }}>
+            Sorry.You should write correct text.</p>
         )}
-        {isError && <ErrorMessage>Something went wrong. Try refreshing the page.</ErrorMessage>}
+
+        {isError && <ErrorMessage error={isError} />}
+
         {images.length >0 && (<ImageGallery images={images} openModal={openModal} />)}
         {nbPage && <LoadMoreBtn onClick={handleLoadMore}/>}
         {isLoading && <Loader />}
@@ -83,4 +101,4 @@ return (
 );
 };
 
-export default App
+export default App;

@@ -1,6 +1,14 @@
 import css from './ImageCard.module.css';
 
-const ImageCard = ({description, small, regular, openModal}) => {
+interface ImageProps {
+    description: string;
+    small: string;
+    regular: string;
+    color: string;
+    openModal: (url: string, description: string) => void;
+}
+
+const ImageCard: React.FC<ImageProps> = ({description, small, regular, openModal}) => {
 return (
     <img 
     className={css.img}

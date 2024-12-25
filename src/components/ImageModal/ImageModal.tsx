@@ -2,8 +2,15 @@ import css from './ImageModal.module.css'
 import ReactModal from 'react-modal'
 ReactModal.setAppElement("#root");
 
+type ImageModalProps = {
+    isOpen: boolean;
+    closeModal: () => void;
+    imgUrl: string;
+    imgAlt: string;
+};
 
-const ImageModal = ({ isOpen, closeModal, imgUrl, imgAlt }) => {
+
+const ImageModal = ({ isOpen, closeModal, imgUrl, imgAlt }: ImageModalProps) => {
     const customStyles = {
         content: {
         maxWidth: "50%",
@@ -15,7 +22,7 @@ const ImageModal = ({ isOpen, closeModal, imgUrl, imgAlt }) => {
         border: "1px solid black",
         },
         overlay: {
-          backgroundColor: "rgba(0, 0, 0, 0.75)",
+        backgroundColor: "rgba(0, 0, 0, 0.75)",
         },
     };
     return (

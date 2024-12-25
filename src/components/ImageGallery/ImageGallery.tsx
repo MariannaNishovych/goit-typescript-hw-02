@@ -1,23 +1,30 @@
 import css from './ImageGallery.module.css'
 import ImageCard from '../ImageCard/ImageCard'
+import { Image } from '../../types';
 
-const ImageGallery = ({ images, openModal }) => {
+type GalleryProps = {
+	images: Image[];
+	openModal: (url: string, alt: string) => void;
+};
+
+const ImageGallery = ({ images, openModal }: GalleryProps) => {
 	return (
-	  <ul className={css.imgList}>
-		{images.map(({ id, description, urls: { small, regular } }) => {
-		  return (
+	<ul className={css.imgList}>
+		{images.map(({ id, alt_description, urls, color}: Image) => {
+		return (
 			<li key={id} className={css.imgItem}>
-			  <ImageCard
-				small={small}
-				regular={regular}
-				description={description}
+			<ImageCard
+				small={urls.small}
+				regular={urls.regular}
+				color={color}
+				description={alt_description}
 				openModal={openModal}
-			  />
+			/>
 			</li>
-		  );
+		);
 		})}
-	  </ul>
+	</ul>
 	);
-  };
-  
-  export default ImageGallery;
+};
+
+export default ImageGallery;
